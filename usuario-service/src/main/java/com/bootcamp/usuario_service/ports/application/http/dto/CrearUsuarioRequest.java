@@ -15,6 +15,9 @@ public class CrearUsuarioRequest {
     @Schema(description = "Nombre del usuario", example = "Juan Pérez")
     private String nombre;
 
+    @Schema(description = "Apellido del usuario", example = "Pérez")
+    private String apellido;
+
     @Schema(description = "Correo electrónico del usuario", example = "juan.perez@example.com")
     private String correo;
 
@@ -29,4 +32,7 @@ public class CrearUsuarioRequest {
 
     @Schema(description = "Clave del usuario", example = "password123")
     private String clave;
+
+    @Schema(description = "ID del rol del usuario", example = "1")
+    private Long rolID;
 }
