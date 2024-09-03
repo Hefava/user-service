@@ -1,10 +1,11 @@
 package com.bootcamp.usuario_service.domain.api.usecase;
 
-import com.bootcamp.usuario_service.domain.exception.MultipleUserValidationExceptions;
 import com.bootcamp.usuario_service.domain.model.Usuario;
+import com.bootcamp.usuario_service.domain.spi.IAuthenticationPort;
 import com.bootcamp.usuario_service.domain.spi.IEncryptPasswordPort;
-import com.bootcamp.usuario_service.domain.api.IUsuarioServicePort;
 import com.bootcamp.usuario_service.domain.spi.IUsuarioPersistencePort;
+import com.bootcamp.usuario_service.domain.api.IUsuarioServicePort;
+import com.bootcamp.usuario_service.domain.exception.MultipleUserValidationExceptions;
 import com.bootcamp.usuario_service.domain.utils.UserValidationMessages;
 import com.bootcamp.usuario_service.domain.utils.UsuarioUtils;
 
@@ -13,16 +14,19 @@ import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RegistrarAuxBodegaUseCase implements IUsuarioServicePort {
+public class UsuarioUseCase implements IUsuarioServicePort {
 
     private final IUsuarioPersistencePort usuarioPersistencePort;
     private final IEncryptPasswordPort encryptPasswordPort;
+    private final IAuthenticationPort authenticationPort;
 
-    public RegistrarAuxBodegaUseCase(IUsuarioPersistencePort usuarioPersistencePort, IEncryptPasswordPort encryptPasswordPort) {
+    public UsuarioUseCase(IUsuarioPersistencePort usuarioPersistencePort, IEncryptPasswordPort encryptPasswordPort, IAuthenticationPort authenticationPort) {
         this.usuarioPersistencePort = usuarioPersistencePort;
         this.encryptPasswordPort = encryptPasswordPort;
+        this.authenticationPort = authenticationPort;
     }
 
+    @Override
     public void registrarAuxBodega(Usuario usuario) {
         List<String> errors = new ArrayList<>();
 
@@ -50,6 +54,12 @@ public class RegistrarAuxBodegaUseCase implements IUsuarioServicePort {
         encriptarClave(usuario);
         establecerRolAuxBodega(usuario);
         usuarioPersistencePort.saveUsuario(usuario);
+    }
+
+    @Override
+    public String login(String email, String password) {
+        Usuario usuario = authenticationPort.authenticate(email, password);
+        return authenticationPort.generateToken(usuario);
     }
 
     private void encriptarClave(Usuario usuario) {

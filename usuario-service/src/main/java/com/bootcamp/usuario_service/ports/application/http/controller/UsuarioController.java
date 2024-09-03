@@ -3,6 +3,8 @@ package com.bootcamp.usuario_service.ports.application.http.controller;
 import com.bootcamp.usuario_service.domain.api.IUsuarioServicePort;
 import com.bootcamp.usuario_service.domain.model.Usuario;
 import com.bootcamp.usuario_service.ports.application.http.dto.CrearUsuarioRequest;
+import com.bootcamp.usuario_service.ports.application.http.dto.LoginRequest;
+import com.bootcamp.usuario_service.ports.application.http.dto.LoginResponse;
 import com.bootcamp.usuario_service.ports.application.http.mapper.CrearUsuarioRequestMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -35,5 +37,17 @@ public class UsuarioController {
         Usuario usuario = requestMapper.toDomain(request);
         usuarioServicePort.registrarAuxBodega(usuario);
         return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @Operation(summary = "Iniciar sesión", description = "Autentica a un usuario en el sistema y retorna un token JWT.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Inicio de sesión exitoso", content = @Content(schema = @Schema(implementation = LoginResponse.class))),
+            @ApiResponse(responseCode = "401", description = "Credenciales incorrectas", content = @Content)
+    })
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponse> login(@RequestBody @Parameter(description = "Datos de inicio de sesión", required = true) LoginRequest loginRequest) {
+        String token = usuarioServicePort.login(loginRequest.getCorreo(), loginRequest.getClave());
+        LoginResponse response = new LoginResponse(token);
+        return ResponseEntity.ok(response);
     }
 }
