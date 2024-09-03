@@ -45,7 +45,7 @@ public class UsuarioEntity implements UserDetails {
     @Column(nullable = false)
     private String clave;
 
-    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @ManyToOne()
     @JoinColumn(name = "rolID", nullable = false)
     private RolEntity rol;
 
