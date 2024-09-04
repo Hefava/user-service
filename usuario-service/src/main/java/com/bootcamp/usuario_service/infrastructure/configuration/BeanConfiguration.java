@@ -1,10 +1,13 @@
 package com.bootcamp.usuario_service.infrastructure.configuration;
 
-import com.bootcamp.usuario_service.domain.api.IUsuarioServicePort;
-import com.bootcamp.usuario_service.domain.api.usecase.UsuarioUseCase;
+import com.bootcamp.usuario_service.domain.api.IAthenticatorServicePort;
+import com.bootcamp.usuario_service.domain.api.IRegistrarServicePort;
+import com.bootcamp.usuario_service.domain.api.usecase.AuthenticatorUseCase;
+import com.bootcamp.usuario_service.domain.api.usecase.RegistrarUseCase;
 import com.bootcamp.usuario_service.domain.spi.IEncryptPasswordPort;
 import com.bootcamp.usuario_service.domain.spi.IUsuarioPersistencePort;
 import com.bootcamp.usuario_service.domain.spi.IAuthenticationPort;
+import com.bootcamp.usuario_service.domain.utils.UserValidationMessages;
 import com.bootcamp.usuario_service.ports.service.JwtService;
 import com.bootcamp.usuario_service.ports.persistency.mysql.repository.UsuarioRepository;
 import com.bootcamp.usuario_service.ports.persistency.mysql.adapter.UsuarioPersistenceAdapter;
@@ -32,11 +35,16 @@ public class BeanConfiguration {
     }
 
     @Bean
-    public IUsuarioServicePort usuarioServicePort(
+    public IRegistrarServicePort usuarioServicePort(
             IUsuarioPersistencePort usuarioPersistencePort,
-            IEncryptPasswordPort encryptPasswordPort,
+            IEncryptPasswordPort encryptPasswordPort) {
+        return new RegistrarUseCase(usuarioPersistencePort, encryptPasswordPort);
+    }
+
+    @Bean
+    public IAthenticatorServicePort authenticatorServicePort(
             IAuthenticationPort authenticationPort) {
-        return new UsuarioUseCase(usuarioPersistencePort, encryptPasswordPort, authenticationPort);
+        return new AuthenticatorUseCase(authenticationPort);
     }
 
     @Bean
@@ -50,10 +58,9 @@ public class BeanConfiguration {
     public IAuthenticationPort authenticationPort(
             UsuarioRepository usuarioRepository,
             AuthenticationManager authenticationManager,
-            PasswordEncoder passwordEncoder,
             UsuarioEntityMapper usuarioEntityMapper,
             JwtService jwtService) {
-        return new AuthenticationAdapter(usuarioRepository, authenticationManager, passwordEncoder, usuarioEntityMapper, jwtService);
+        return new AuthenticationAdapter(usuarioRepository, authenticationManager, usuarioEntityMapper, jwtService);
     }
 
     @Bean
@@ -77,6 +84,6 @@ public class BeanConfiguration {
     @Bean
     public UserDetailsService userDetailsService() {
         return email -> usuarioRepository.findByCorreo(email)
-                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
+                .orElseThrow(() -> new IllegalArgumentException(UserValidationMessages.USUARIO_NO_ENCONTRADO));
     }
 }

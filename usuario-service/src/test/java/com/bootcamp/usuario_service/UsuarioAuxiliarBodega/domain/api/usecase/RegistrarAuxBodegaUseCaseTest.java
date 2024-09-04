@@ -1,6 +1,6 @@
 package com.bootcamp.usuario_service.UsuarioAuxiliarBodega.domain.api.usecase;
 
-import com.bootcamp.usuario_service.domain.api.usecase.UsuarioUseCase;
+import com.bootcamp.usuario_service.domain.api.usecase.RegistrarUseCase;
 import com.bootcamp.usuario_service.domain.exception.MultipleUserValidationExceptions;
 import com.bootcamp.usuario_service.domain.model.Usuario;
 import com.bootcamp.usuario_service.domain.spi.IEncryptPasswordPort;
@@ -30,7 +30,7 @@ class RegistrarAuxBodegaUseCaseTest {
     private IEncryptPasswordPort encryptPasswordPort;
 
     @InjectMocks
-    private UsuarioUseCase registrarUsuarioUseCase;
+    private RegistrarUseCase registrarUsuarioUseCase;
 
     @BeforeEach
     void setUp() {

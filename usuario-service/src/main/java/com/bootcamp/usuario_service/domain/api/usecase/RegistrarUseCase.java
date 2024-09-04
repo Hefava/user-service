@@ -1,10 +1,9 @@
 package com.bootcamp.usuario_service.domain.api.usecase;
 
 import com.bootcamp.usuario_service.domain.model.Usuario;
-import com.bootcamp.usuario_service.domain.spi.IAuthenticationPort;
 import com.bootcamp.usuario_service.domain.spi.IEncryptPasswordPort;
 import com.bootcamp.usuario_service.domain.spi.IUsuarioPersistencePort;
-import com.bootcamp.usuario_service.domain.api.IUsuarioServicePort;
+import com.bootcamp.usuario_service.domain.api.IRegistrarServicePort;
 import com.bootcamp.usuario_service.domain.exception.MultipleUserValidationExceptions;
 import com.bootcamp.usuario_service.domain.utils.UserValidationMessages;
 import com.bootcamp.usuario_service.domain.utils.UsuarioUtils;
@@ -14,23 +13,21 @@ import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UsuarioUseCase implements IUsuarioServicePort {
+public class RegistrarUseCase implements IRegistrarServicePort {
 
     private final IUsuarioPersistencePort usuarioPersistencePort;
     private final IEncryptPasswordPort encryptPasswordPort;
-    private final IAuthenticationPort authenticationPort;
 
-    public UsuarioUseCase(IUsuarioPersistencePort usuarioPersistencePort, IEncryptPasswordPort encryptPasswordPort, IAuthenticationPort authenticationPort) {
+    public RegistrarUseCase(IUsuarioPersistencePort usuarioPersistencePort, IEncryptPasswordPort encryptPasswordPort) {
         this.usuarioPersistencePort = usuarioPersistencePort;
         this.encryptPasswordPort = encryptPasswordPort;
-        this.authenticationPort = authenticationPort;
     }
 
     @Override
     public void registrarAuxBodega(Usuario usuario) {
         List<String> errors = new ArrayList<>();
 
-        if (usuarioPersistencePort.existsByDocumentoDeIdentidad(usuario.getDocumentoDeIdentidad())) {
+        if (usuarioPersistencePort.existsByCorreo(usuario.getCorreo())) {
             errors.add(UserValidationMessages.USER_ALREADY_EXISTS);
         }
 
@@ -54,12 +51,6 @@ public class UsuarioUseCase implements IUsuarioServicePort {
         encriptarClave(usuario);
         establecerRolAuxBodega(usuario);
         usuarioPersistencePort.saveUsuario(usuario);
-    }
-
-    @Override
-    public String login(String email, String password) {
-        Usuario usuario = authenticationPort.authenticate(email, password);
-        return authenticationPort.generateToken(usuario);
     }
 
     private void encriptarClave(Usuario usuario) {

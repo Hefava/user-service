@@ -1,8 +1,8 @@
 package com.bootcamp.usuario_service.UsuarioAuxiliarBodega.ports.application.http.controller;
 
-import com.bootcamp.usuario_service.domain.api.IUsuarioServicePort;
+import com.bootcamp.usuario_service.domain.api.IRegistrarServicePort;
 import com.bootcamp.usuario_service.domain.model.Usuario;
-import com.bootcamp.usuario_service.ports.application.http.controller.UsuarioController;
+import com.bootcamp.usuario_service.ports.application.http.controller.RegisterController;
 import com.bootcamp.usuario_service.ports.application.http.dto.CrearUsuarioRequest;
 import com.bootcamp.usuario_service.ports.application.http.mapper.CrearUsuarioRequestMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,13 +25,13 @@ import java.time.LocalDate;
 class UsuarioControllerTest {
 
     @Mock
-    private IUsuarioServicePort usuarioServicePort;
+    private IRegistrarServicePort usuarioServicePort;
 
     @Mock
     private CrearUsuarioRequestMapper requestMapper;
 
     @InjectMocks
-    private UsuarioController usuarioController;
+    private RegisterController usuarioController;
 
     private MockMvc mockMvc;
 
