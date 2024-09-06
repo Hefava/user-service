@@ -3,7 +3,6 @@ package com.bootcamp.usuario_service.infrastructure.exceptionhandler;
 import com.bootcamp.usuario_service.domain.exception.InvalidCredentialsException;
 import com.bootcamp.usuario_service.domain.exception.InvalidTokenException;
 import com.bootcamp.usuario_service.domain.exception.MultipleUserValidationExceptions;
-import com.bootcamp.usuario_service.domain.exception.UnauthorizedRoleException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -36,11 +35,6 @@ public class ControllerAdvisor {
     @ExceptionHandler(InvalidTokenException.class)
     public ResponseEntity<String> handleInvalidToken(InvalidTokenException ex) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.getMessage());
-    }
-
-    @ExceptionHandler(UnauthorizedRoleException.class)
-    public ResponseEntity<String> handleUnauthorizedRole(UnauthorizedRoleException ex) {
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ex.getMessage());
     }
 
     @ExceptionHandler(Exception.class)
