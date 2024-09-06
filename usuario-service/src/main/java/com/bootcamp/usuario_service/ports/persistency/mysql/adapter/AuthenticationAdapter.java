@@ -2,7 +2,8 @@ package com.bootcamp.usuario_service.ports.persistency.mysql.adapter;
 
 import com.bootcamp.usuario_service.domain.model.Usuario;
 import com.bootcamp.usuario_service.domain.spi.IAuthenticationPort;
-import com.bootcamp.usuario_service.ports.service.JwtService;
+import com.bootcamp.usuario_service.domain.utils.Validation;
+import com.bootcamp.usuario_service.ports.utils.JwtService;
 import com.bootcamp.usuario_service.ports.persistency.mysql.mapper.UsuarioEntityMapper;
 import com.bootcamp.usuario_service.ports.persistency.mysql.repository.UsuarioRepository;
 import com.bootcamp.usuario_service.ports.persistency.mysql.entity.UsuarioEntity;
@@ -36,5 +37,15 @@ public class AuthenticationAdapter implements IAuthenticationPort {
     @Override
     public String generateToken(Usuario usuario) {
         return jwtService.getToken(usuarioEntityMapper.toEntity(usuario));
+    }
+
+    @Override
+    public Validation validateToken(String token) {
+        String correo = jwtService.extractUsername(token);
+        UsuarioEntity usuarioEntity = usuarioRepository.findByCorreo(correo)
+                .orElseThrow(() -> new UsernameNotFoundException(USUARIO_NO_ENCONTRADO));
+        String rol = usuarioEntity.getRol().getNombre().name();
+        Boolean valid = jwtService.isTokenValid(token, usuarioEntity);
+        return new Validation(correo, rol, valid);
     }
 }

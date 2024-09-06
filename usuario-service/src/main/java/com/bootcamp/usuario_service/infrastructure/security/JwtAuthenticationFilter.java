@@ -1,6 +1,6 @@
 package com.bootcamp.usuario_service.infrastructure.security;
 
-import com.bootcamp.usuario_service.ports.service.JwtService;
+import com.bootcamp.usuario_service.ports.utils.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

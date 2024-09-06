@@ -8,7 +8,7 @@ import com.bootcamp.usuario_service.domain.spi.IEncryptPasswordPort;
 import com.bootcamp.usuario_service.domain.spi.IUsuarioPersistencePort;
 import com.bootcamp.usuario_service.domain.spi.IAuthenticationPort;
 import com.bootcamp.usuario_service.domain.utils.UserValidationMessages;
-import com.bootcamp.usuario_service.ports.service.JwtService;
+import com.bootcamp.usuario_service.ports.utils.JwtService;
 import com.bootcamp.usuario_service.ports.persistency.mysql.repository.UsuarioRepository;
 import com.bootcamp.usuario_service.ports.persistency.mysql.adapter.UsuarioPersistenceAdapter;
 import com.bootcamp.usuario_service.ports.persistency.mysql.adapter.AuthenticationAdapter;

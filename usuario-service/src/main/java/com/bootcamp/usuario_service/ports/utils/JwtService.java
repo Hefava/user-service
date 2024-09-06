@@ -1,9 +1,7 @@
-package com.bootcamp.usuario_service.ports.service;
+package com.bootcamp.usuario_service.ports.utils;
 
-import com.bootcamp.usuario_service.ports.persistency.mysql.entity.UsuarioEntity;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -23,7 +21,7 @@ public class JwtService {
     @Value("${jwt.secret}")
     private String jwtSecret;
 
-    public String getToken(UsuarioEntity user) {
+    public String getToken(UserDetails user) {
         return generateToken(new HashMap<>(), user);
     }
 
@@ -66,16 +64,11 @@ public class JwtService {
     }
 
     private Claims extractAllClaims(String token) {
-        try {
-            return Jwts
-                    .parserBuilder()
-                    .setSigningKey(getSignInKey())
-                    .build()
-                    .parseClaimsJws(token)
-                    .getBody();
-        } catch (JwtException e) {
-            System.err.println("Error decoding JWT: " + e.getMessage());
-            throw new RuntimeException("Token JWT no válido", e);
-        }
+        return Jwts
+                .parserBuilder()
+                .setSigningKey(getSignInKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
     }
 }

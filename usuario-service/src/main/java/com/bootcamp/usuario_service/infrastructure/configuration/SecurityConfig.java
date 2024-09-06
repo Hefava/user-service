@@ -12,6 +12,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import static com.bootcamp.usuario_service.domain.utils.SecurityConstants.ROL_ADMIN;
+
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -26,8 +28,9 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                        .requestMatchers("/registrar/registrarAuxBodega").hasAuthority("ROLE_ADMIN")
+                        .requestMatchers("/registrar/registrarAuxBodega").hasRole(ROL_ADMIN)
                         .requestMatchers("/auth/login").permitAll()
+                        .requestMatchers("/auth/validate-token/*").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
