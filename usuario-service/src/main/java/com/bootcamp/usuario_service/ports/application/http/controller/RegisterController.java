@@ -30,7 +30,7 @@ public class RegisterController {
             @ApiResponse(responseCode = "400", description = UserValidationMessages.SOLICITUD_INCORRECTA, content = @Content(schema = @Schema(implementation = String.class))),
             @ApiResponse(responseCode = "500", description = UserValidationMessages.ERROR_INTERNO_SERVIDOR, content = @Content(schema = @Schema(implementation = String.class)))
     })
-    @PostMapping("/registrarAuxBodega")
+    @PostMapping("/registrar-auxbodega")
     public ResponseEntity<Void> registrarAuxBodega(
             @RequestBody @Parameter(required = true) CrearUsuarioRequest request) {
         Usuario usuario = requestMapper.toDomain(request);

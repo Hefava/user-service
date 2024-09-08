@@ -20,8 +20,6 @@ public class UsuarioUtils {
     // ID de rol Cliente
     public static final Long ROL_CLIENTE_ID = 3L;
 
-
-
     private UsuarioUtils() {
         throw new AssertionError("Cannot instantiate this class");
     }

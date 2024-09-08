@@ -1,4 +1,4 @@
-package com.bootcamp.usuario_service.UsuarioAuxiliarBodega.domain.api.usecase;
+package com.bootcamp.usuario_service.Usuario.domain.api.usecase;
 
 import com.bootcamp.usuario_service.domain.api.usecase.RegistrarUseCase;
 import com.bootcamp.usuario_service.domain.exception.MultipleUserValidationExceptions;
@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-class RegistrarAuxBodegaUseCaseTest {
+class RegistrarUseCaseTest {
 
     @Mock
     private IUsuarioPersistencePort usuarioPersistencePort;
@@ -45,7 +45,7 @@ class RegistrarAuxBodegaUseCaseTest {
         usuario.setCelular("1234567890");
         usuario.setFechaNacimiento(LocalDate.now().minusYears(20));
 
-        when(usuarioPersistencePort.existsByDocumentoDeIdentidad(usuario.getDocumentoDeIdentidad())).thenReturn(true);
+        when(usuarioPersistencePort.existsByCorreo(usuario.getCorreo())).thenReturn(true);
 
         MultipleUserValidationExceptions exception = assertThrows(MultipleUserValidationExceptions.class, () ->
                 registrarUsuarioUseCase.registrarAuxBodega(usuario)
@@ -65,7 +65,7 @@ class RegistrarAuxBodegaUseCaseTest {
         usuario.setCelular("+1234567890");
         usuario.setFechaNacimiento(LocalDate.now().minusYears(20));
 
-        when(usuarioPersistencePort.existsByDocumentoDeIdentidad(usuario.getDocumentoDeIdentidad())).thenReturn(false);
+        when(usuarioPersistencePort.existsByCorreo(usuario.getCorreo())).thenReturn(false);
 
         MultipleUserValidationExceptions exception = assertThrows(MultipleUserValidationExceptions.class, () ->
                 registrarUsuarioUseCase.registrarAuxBodega(usuario)
@@ -85,7 +85,7 @@ class RegistrarAuxBodegaUseCaseTest {
         usuario.setCelular("1234567890");
         usuario.setFechaNacimiento(LocalDate.now().minusYears(20));
 
-        when(usuarioPersistencePort.existsByDocumentoDeIdentidad(usuario.getDocumentoDeIdentidad())).thenReturn(false);
+        when(usuarioPersistencePort.existsByCorreo(usuario.getCorreo())).thenReturn(false);
 
         MultipleUserValidationExceptions exception = assertThrows(MultipleUserValidationExceptions.class, () ->
                 registrarUsuarioUseCase.registrarAuxBodega(usuario)
@@ -105,7 +105,7 @@ class RegistrarAuxBodegaUseCaseTest {
         usuario.setCelular("12345678901234"); // Exceeds maximum length
         usuario.setFechaNacimiento(LocalDate.now().minusYears(20));
 
-        when(usuarioPersistencePort.existsByDocumentoDeIdentidad(usuario.getDocumentoDeIdentidad())).thenReturn(false);
+        when(usuarioPersistencePort.existsByCorreo(usuario.getCorreo())).thenReturn(false);
 
         MultipleUserValidationExceptions exception = assertThrows(MultipleUserValidationExceptions.class, () ->
                 registrarUsuarioUseCase.registrarAuxBodega(usuario)
@@ -123,9 +123,9 @@ class RegistrarAuxBodegaUseCaseTest {
         usuario.setCorreo("valid.email@example.com");
         usuario.setDocumentoDeIdentidad("12345678");
         usuario.setCelular("1234567890");
-        usuario.setFechaNacimiento(LocalDate.now().minusYears(10)); // Underage
+        usuario.setFechaNacimiento(LocalDate.now().minusYears(10));
 
-        when(usuarioPersistencePort.existsByDocumentoDeIdentidad(usuario.getDocumentoDeIdentidad())).thenReturn(false);
+        when(usuarioPersistencePort.existsByCorreo(usuario.getCorreo())).thenReturn(false);
 
         MultipleUserValidationExceptions exception = assertThrows(MultipleUserValidationExceptions.class, () ->
                 registrarUsuarioUseCase.registrarAuxBodega(usuario)
@@ -145,7 +145,7 @@ class RegistrarAuxBodegaUseCaseTest {
         usuario.setCelular("1234567890");
         usuario.setFechaNacimiento(LocalDate.now().minusYears(20));
 
-        when(usuarioPersistencePort.existsByDocumentoDeIdentidad(usuario.getDocumentoDeIdentidad())).thenReturn(false);
+        when(usuarioPersistencePort.existsByCorreo(usuario.getCorreo())).thenReturn(false);
         when(encryptPasswordPort.encrypt(anyString())).thenReturn("encryptedPassword");
 
         registrarUsuarioUseCase.registrarAuxBodega(usuario);

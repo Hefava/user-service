@@ -23,7 +23,7 @@ import static com.bootcamp.usuario_service.domain.utils.UserValidationMessages.T
 
 @Component
 @RequiredArgsConstructor
-public class JwtAuthenticationFilter extends OncePerRequestFilter {
+public class JwtAuthenticationFilter extends OncePerRequestFilter { //Crear metodos para cada validacion
 
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
