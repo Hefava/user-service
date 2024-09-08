@@ -1,7 +1,8 @@
 package com.bootcamp.usuario_service.ports.application.http.controller;
 
-import com.bootcamp.usuario_service.domain.api.IUsuarioServicePort;
+import com.bootcamp.usuario_service.domain.api.IRegistrarServicePort;
 import com.bootcamp.usuario_service.domain.model.Usuario;
+import com.bootcamp.usuario_service.domain.utils.UserValidationMessages;
 import com.bootcamp.usuario_service.ports.application.http.dto.CrearUsuarioRequest;
 import com.bootcamp.usuario_service.ports.application.http.mapper.CrearUsuarioRequestMapper;
 import io.swagger.v3.oas.annotations.Operation;
@@ -16,22 +17,22 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/usuario")
+@RequestMapping("/registrar")
 @RequiredArgsConstructor
-public class UsuarioController {
+public class RegisterController {
 
-    private final IUsuarioServicePort usuarioServicePort;
+    private final IRegistrarServicePort usuarioServicePort;
     private final CrearUsuarioRequestMapper requestMapper;
 
-    @Operation(summary = "Registrar un nuevo usuario", description = "Crea un nuevo usuario auxiliar de bodega en el sistema.")
+    @Operation(summary = UserValidationMessages.REGISTER_SUMMARY_REGISTRAR_USUARIO, description = UserValidationMessages.REGISTER_DESCRIPTION_REGISTRAR_USUARIO)
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Usuario creado exitosamente"),
-            @ApiResponse(responseCode = "400", description = "Solicitud incorrecta, por ejemplo, datos de usuario inválidos", content = @Content(schema = @Schema(implementation = String.class))),
-            @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content(schema = @Schema(implementation = String.class)))
+            @ApiResponse(responseCode = "201", description = UserValidationMessages.USUARIO_CREADO_EXITO),
+            @ApiResponse(responseCode = "400", description = UserValidationMessages.SOLICITUD_INCORRECTA, content = @Content(schema = @Schema(implementation = String.class))),
+            @ApiResponse(responseCode = "500", description = UserValidationMessages.ERROR_INTERNO_SERVIDOR, content = @Content(schema = @Schema(implementation = String.class)))
     })
-    @PostMapping("/registrar")
+    @PostMapping("/registrar-auxbodega")
     public ResponseEntity<Void> registrarAuxBodega(
-            @RequestBody @Parameter(description = "Datos del usuario a crear", required = true) CrearUsuarioRequest request) {
+            @RequestBody @Parameter(required = true) CrearUsuarioRequest request) {
         Usuario usuario = requestMapper.toDomain(request);
         usuarioServicePort.registrarAuxBodega(usuario);
         return new ResponseEntity<>(HttpStatus.CREATED);

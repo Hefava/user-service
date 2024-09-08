@@ -17,7 +17,9 @@ public class UsuarioUtils {
     // ID de rol auxiliar de bodega
     public static final Long ROL_AUX_BODEGA_ID = 2L;
 
-    // Private constructor to prevent instantiation
+    // ID de rol Cliente
+    public static final Long ROL_CLIENTE_ID = 3L;
+
     private UsuarioUtils() {
         throw new AssertionError("Cannot instantiate this class");
     }

@@ -1,4 +1,4 @@
-package com.bootcamp.usuario_service.UsuarioAuxiliarBodega.ports.persistency.mysql.adapter;
+package com.bootcamp.usuario_service.Usuario.ports.persistency.mysql.adapter;
 
 import com.bootcamp.usuario_service.domain.model.Usuario;
 import com.bootcamp.usuario_service.ports.persistency.mysql.adapter.UsuarioPersistenceAdapter;
@@ -56,28 +56,28 @@ class UsuarioPersistenceAdapterTest {
     @Test
     void existsByDocumentoDeIdentidad_ShouldReturnTrueIfExists() {
         // Arrange
-        String documentoDeIdentidad = "12345678";
-        when(usuarioRepository.existsByDocumentoDeIdentidad(documentoDeIdentidad)).thenReturn(true);
+        String correo = "validemail@example.com";
+        when(usuarioRepository.existsByCorreo(correo)).thenReturn(true);
 
         // Act
-        boolean exists = usuarioPersistenceAdapter.existsByDocumentoDeIdentidad(documentoDeIdentidad);
+        boolean exists = usuarioPersistenceAdapter.existsByCorreo(correo);
 
         // Assert
         assertTrue(exists);
-        verify(usuarioRepository).existsByDocumentoDeIdentidad(documentoDeIdentidad);
+        verify(usuarioRepository).existsByCorreo(correo);
     }
 
     @Test
     void existsByDocumentoDeIdentidad_ShouldReturnFalseIfNotExists() {
         // Arrange
-        String documentoDeIdentidad = "12345678";
-        when(usuarioRepository.existsByDocumentoDeIdentidad(documentoDeIdentidad)).thenReturn(false);
+        String correo = "validemail@example.com";
+        when(usuarioRepository.existsByCorreo(correo)).thenReturn(false);
 
         // Act
-        boolean exists = usuarioPersistenceAdapter.existsByDocumentoDeIdentidad(documentoDeIdentidad);
+        boolean exists = usuarioPersistenceAdapter.existsByCorreo(correo);
 
         // Assert
         assertFalse(exists);
-        verify(usuarioRepository).existsByDocumentoDeIdentidad(documentoDeIdentidad);
+        verify(usuarioRepository).existsByCorreo(correo);
     }
 }

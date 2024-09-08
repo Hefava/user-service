@@ -1,10 +1,10 @@
 package com.bootcamp.usuario_service.ports.persistency.mysql.entity;
 
+import com.bootcamp.usuario_service.domain.utils.RolEnum;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
+import java.io.Serializable;
 
 @Entity
 @Table(name = "rol")
@@ -12,14 +12,15 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class RolEntity {
+@ToString
+public class RolEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long rolID;
 
     @Column(nullable = false, unique = true)
-    private String nombre;
+    private RolEnum nombre;
 
     @Column(nullable = false)
     private String descripcion;

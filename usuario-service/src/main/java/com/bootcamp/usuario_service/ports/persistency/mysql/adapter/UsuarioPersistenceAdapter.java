@@ -29,7 +29,7 @@ public class UsuarioPersistenceAdapter implements IUsuarioPersistencePort {
     }
 
     @Override
-    public boolean existsByDocumentoDeIdentidad(String documentoDeIdentidad) {
-        return usuarioRepository.existsByDocumentoDeIdentidad(documentoDeIdentidad);
+    public boolean existsByCorreo(String correo) {
+        return usuarioRepository.existsByCorreo(correo);
     }
 }

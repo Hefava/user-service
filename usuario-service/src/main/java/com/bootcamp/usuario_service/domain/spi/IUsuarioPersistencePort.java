@@ -4,5 +4,5 @@ import com.bootcamp.usuario_service.domain.model.Usuario;
 
 public interface IUsuarioPersistencePort {
     void saveUsuario(Usuario usuario);
-    boolean existsByDocumentoDeIdentidad(String documentoDeIdentidad);
+    boolean existsByCorreo(String correo);
 }

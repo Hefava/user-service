@@ -1,4 +1,4 @@
-package com.bootcamp.usuario_service.UsuarioAuxiliarBodega.ports.persistency.mysql.adapter;
+package com.bootcamp.usuario_service.Usuario.ports.persistency.mysql.adapter;
 
 import com.bootcamp.usuario_service.ports.persistency.mysql.adapter.EncryptPasswordAdapter;
 import org.junit.jupiter.api.BeforeEach;
