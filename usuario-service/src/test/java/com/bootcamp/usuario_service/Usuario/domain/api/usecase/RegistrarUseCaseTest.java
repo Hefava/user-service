@@ -138,7 +138,7 @@ class RegistrarUseCaseTest {
     }
 
     @Test
-    void registrarUsuario_WhenValidUsuario_ShouldSaveUsuarioSuccessfully() {
+    void registrarUsuarioAuxiliar_WhenValidUsuario_ShouldSaveUsuarioSuccessfully() {
         Usuario usuario = new Usuario();
         usuario.setCorreo("valid.email@example.com");
         usuario.setDocumentoDeIdentidad("12345678");
@@ -149,6 +149,22 @@ class RegistrarUseCaseTest {
         when(encryptPasswordPort.encrypt(anyString())).thenReturn("encryptedPassword");
 
         registrarUsuarioUseCase.registrarAuxBodega(usuario);
+
+        verify(usuarioPersistencePort).saveUsuario(usuario);
+    }
+
+    @Test
+    void registrarUsuarioCliente_WhenValidUsuario_ShouldSaveUsuarioSuccessfully() {
+        Usuario usuario = new Usuario();
+        usuario.setCorreo("valid.email@example.com");
+        usuario.setDocumentoDeIdentidad("12345678");
+        usuario.setCelular("1234567890");
+        usuario.setFechaNacimiento(LocalDate.now().minusYears(20));
+
+        when(usuarioPersistencePort.existsByCorreo(usuario.getCorreo())).thenReturn(false);
+        when(encryptPasswordPort.encrypt(anyString())).thenReturn("encryptedPassword");
+
+        registrarUsuarioUseCase.registrarCliente(usuario);
 
         verify(usuarioPersistencePort).saveUsuario(usuario);
     }

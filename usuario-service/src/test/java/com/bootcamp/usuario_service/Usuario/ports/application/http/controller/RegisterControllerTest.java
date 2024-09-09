@@ -68,6 +68,7 @@ class RegisterControllerTest {
 
     @Test
     void testRegistrarAuxBodega_InternalServerError() throws Exception {
+        // Arrange
         CrearUsuarioRequest request = new CrearUsuarioRequest();
         request.setCorreo("test@correo.com");
         request.setClave("password123");
@@ -85,6 +86,53 @@ class RegisterControllerTest {
         mockMvc.perform(post("/registrar/registrar-auxbodega")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{ \"correo\": \"test@correo.com\", \"clave\": \"password123\", \"nombre\": \"Test User\" }"))
+                .andExpect(status().isInternalServerError());
+    }
+
+    @Test
+    void testRegistrarCliente_Success() throws Exception {
+        // Arrange
+        CrearUsuarioRequest request = new CrearUsuarioRequest();
+        request.setCorreo("cliente@correo.com");
+        request.setClave("password123");
+        request.setNombre("Cliente Test");
+
+        Usuario usuario = new Usuario();
+        usuario.setCorreo("cliente@correo.com");
+        usuario.setClave("password123");
+        usuario.setNombre("Cliente Test");
+
+        // Simulamos el mapeo del DTO a dominio y la llamada al servicio
+        Mockito.when(requestMapper.toDomain(any(CrearUsuarioRequest.class))).thenReturn(usuario);
+        doNothing().when(registrarServicePort).registrarCliente(any(Usuario.class));
+
+        // Act & Assert: Ejecutamos la solicitud HTTP POST y verificamos que responde con el estado 201 (CREATED)
+        mockMvc.perform(post("/registrar/registrar-cliente")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{ \"correo\": \"cliente@correo.com\", \"clave\": \"password123\", \"nombre\": \"Cliente Test\" }"))
+                .andExpect(status().isCreated());
+    }
+
+    @Test
+    void testRegistrarCliente_InternalServerError() throws Exception {
+        // Arrange
+        CrearUsuarioRequest request = new CrearUsuarioRequest();
+        request.setCorreo("cliente@correo.com");
+        request.setClave("password123");
+        request.setNombre("Cliente Test");
+
+        Usuario usuario = new Usuario();
+        usuario.setCorreo("cliente@correo.com");
+        usuario.setClave("password123");
+        usuario.setNombre("Cliente Test");
+
+        Mockito.when(requestMapper.toDomain(any(CrearUsuarioRequest.class))).thenReturn(usuario);
+        Mockito.doThrow(new RuntimeException("Error interno")).when(registrarServicePort).registrarCliente(any(Usuario.class));
+
+        // Act & Assert: Verificamos que se devuelve el estado 500 (INTERNAL_SERVER_ERROR)
+        mockMvc.perform(post("/registrar/registrar-cliente")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{ \"correo\": \"cliente@correo.com\", \"clave\": \"password123\", \"nombre\": \"Cliente Test\" }"))
                 .andExpect(status().isInternalServerError());
     }
 }

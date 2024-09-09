@@ -24,7 +24,7 @@ public class RegisterController {
     private final IRegistrarServicePort usuarioServicePort;
     private final CrearUsuarioRequestMapper requestMapper;
 
-    @Operation(summary = UserValidationMessages.REGISTER_SUMMARY_REGISTRAR_USUARIO, description = UserValidationMessages.REGISTER_DESCRIPTION_REGISTRAR_USUARIO)
+    @Operation(summary = UserValidationMessages.REGISTER_SUMMARY_REGISTRAR_USUARIO_AUXILIAR, description = UserValidationMessages.REGISTER_DESCRIPTION_REGISTRAR_USUARIO_AUXILIAR)
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = UserValidationMessages.USUARIO_CREADO_EXITO),
             @ApiResponse(responseCode = "400", description = UserValidationMessages.SOLICITUD_INCORRECTA, content = @Content(schema = @Schema(implementation = String.class))),
@@ -35,6 +35,20 @@ public class RegisterController {
             @RequestBody @Parameter(required = true) CrearUsuarioRequest request) {
         Usuario usuario = requestMapper.toDomain(request);
         usuarioServicePort.registrarAuxBodega(usuario);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @Operation(summary = UserValidationMessages.REGISTER_SUMMARY_REGISTRAR_USUARIO_CLIENTE, description = UserValidationMessages.REGISTER_DESCRIPTION_REGISTRAR_USUARIO_CLIENTE)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = UserValidationMessages.USUARIO_CREADO_EXITO),
+            @ApiResponse(responseCode = "400", description = UserValidationMessages.SOLICITUD_INCORRECTA, content = @Content(schema = @Schema(implementation = String.class))),
+            @ApiResponse(responseCode = "500", description = UserValidationMessages.ERROR_INTERNO_SERVIDOR, content = @Content(schema = @Schema(implementation = String.class)))
+    })
+    @PostMapping("/registrar-cliente")
+    public ResponseEntity<Void> registrarCliente(
+            @RequestBody @Parameter(required = true) CrearUsuarioRequest request) {
+        Usuario usuario = requestMapper.toDomain(request);
+        usuarioServicePort.registrarCliente(usuario);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }
