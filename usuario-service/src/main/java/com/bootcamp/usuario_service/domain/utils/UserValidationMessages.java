@@ -11,7 +11,7 @@ public class UserValidationMessages {
   public static final String INVALID_ID_DOCUMENT = "Documento de identidad debe ser numérico";
   public static final String CELLULAR_LENGTH_EXCEEDED = "El teléfono no debe exceder 13 caracteres";
   public static final String USER_UNDERAGE = "El usuario debe ser mayor de edad";
-  public static final String USER_ALREADY_EXISTS = "Ya existe un usuario con el documento de identidad proporcionado";
+  public static final String USER_ALREADY_EXISTS = "Ya existe un usuario con el correo electronico proporcionado";
   public static final String USUARIO_NO_ENCONTRADO = "Usuario no encontrado";
   public static final String USUARIO_CREADO_EXITO = "Usuario creado exitosamente";
   public static final String SOLICITUD_INCORRECTA = "Solicitud incorrecta, por ejemplo, datos de usuario inválidos";
@@ -25,6 +25,8 @@ public class UserValidationMessages {
   //Info Swagger
   public static final String AUTH_SUMMARY_INICIAR_SESION = "Iniciar sesión";
   public static final String AUTH_DESCRIPTION_INICIAR_SESION = "Autentica a un usuario en el sistema y retorna un token JWT.";
-  public static final String REGISTER_SUMMARY_REGISTRAR_USUARIO = "Registrar un nuevo usuario";
-  public static final String REGISTER_DESCRIPTION_REGISTRAR_USUARIO = "Crea un nuevo usuario auxiliar de bodega en el sistema.";
+  public static final String REGISTER_SUMMARY_REGISTRAR_USUARIO_AUXILIAR = "Registrar un nuevo usuario auxiliar de bodega.";
+  public static final String REGISTER_DESCRIPTION_REGISTRAR_USUARIO_AUXILIAR = "Crea un nuevo usuario auxiliar de bodega en el sistema.";
+    public static final String REGISTER_SUMMARY_REGISTRAR_USUARIO_CLIENTE = "Registrar un nuevo usuario cliente.";
+    public static final String REGISTER_DESCRIPTION_REGISTRAR_USUARIO_CLIENTE = "Crea un nuevo usuario cliente en el sistema.";
 }

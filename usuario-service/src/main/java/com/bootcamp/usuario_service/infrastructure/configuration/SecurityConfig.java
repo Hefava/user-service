@@ -33,6 +33,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                         .requestMatchers("/registrar/registrar-auxbodega").hasRole(ROL_ADMIN)
+                        .requestMatchers("/registrar/registrar-cliente").permitAll()
                         .requestMatchers("/auth/login").permitAll()
                         .requestMatchers("/auth/validate-token/*").permitAll()
                         .anyRequest().authenticated()
