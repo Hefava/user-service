@@ -35,6 +35,12 @@ public class AuthenticationController {
         return ResponseEntity.ok(response);
     }
 
+    @Operation(summary = UserValidationMessages.AUTH_SUMMARY_VALIDAR_TOKEN, description = UserValidationMessages.AUTH_DESCRIPTION_VALIDAR_TOKEN)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = UserValidationMessages.TOKEN_VALIDO, content = @Content(schema = @Schema(implementation = ValidationResponse.class))),
+            @ApiResponse(responseCode = "401", description = UserValidationMessages.TOKEN_INVALIDO_DESCRIPCION, content = @Content),
+            @ApiResponse(responseCode = "500", description = UserValidationMessages.ERROR_INTERNO_SERVIDOR, content = @Content)
+    })
     @PostMapping("/validate-token/{token}")
     public ResponseEntity<ValidationResponse> validateToken(@PathVariable @Parameter(required = true) String token) {
         ValidationResponse validationResponse = validationResponseMapper.toDto(athenticatorServicePort.validateToken(token));
