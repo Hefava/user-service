@@ -57,7 +57,7 @@ public class UsuarioEntity implements UserDetails {
     @Override
     @Transactional
     public String getUsername() {
-        return this.correo;
+        return this.usuarioID.toString();
     }
 
     @Override

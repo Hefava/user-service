@@ -10,7 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ValidationResponse {
-    private String username;
+    private String userID;
     private String role;
     private Boolean authorized;
 }

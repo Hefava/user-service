@@ -23,7 +23,7 @@ import static com.bootcamp.usuario_service.domain.utils.UserValidationMessages.T
 
 @Component
 @RequiredArgsConstructor
-public class JwtAuthenticationFilter extends OncePerRequestFilter { //Crear metodos para cada validacion
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
@@ -36,7 +36,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter { //Crear meto
 
         final String authHeader = request.getHeader("Authorization");
         final String jwt;
-        final String userName;
+        final String userId;
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
@@ -46,10 +46,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter { //Crear meto
         jwt = authHeader.substring(7);
 
         try {
-            userName = jwtService.extractUsername(jwt);
+            userId = jwtService.extractUserId(jwt);
 
-            if (userName != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                UserDetails userDetails = userDetailsService.loadUserByUsername(userName);
+            if (userId != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                UserDetails userDetails = userDetailsService.loadUserByUsername(userId);
 
                 if (jwtService.isTokenValid(jwt, userDetails)) {
                     UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(

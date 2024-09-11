@@ -6,7 +6,6 @@ public class UserValidationMessages {
     throw new AssertionError("Cannot instantiate this class");
   }
 
-  // Mensajes de error y éxito
   public static final String ERROR_INESPERADO = "Ocurrió un error inesperado";
   public static final String INVALID_EMAIL_FORMAT = "Correo no tiene un formato válido";
   public static final String INVALID_ID_DOCUMENT = "Documento de identidad debe ser numérico";
@@ -23,9 +22,13 @@ public class UserValidationMessages {
   public static final String TOKEN_INVALIDO = "Token inválido o expirado";
   public static final String ERROR_AUTENTICACION = "Error en la autenticación";
 
-  // Info Swagger
+  //Info Swagger
   public static final String AUTH_SUMMARY_INICIAR_SESION = "Iniciar sesión";
   public static final String AUTH_DESCRIPTION_INICIAR_SESION = "Autentica a un usuario en el sistema y retorna un token JWT.";
+  public static final String REGISTER_SUMMARY_REGISTRAR_USUARIO_AUXILIAR = "Registrar un nuevo usuario auxiliar de bodega.";
+  public static final String REGISTER_DESCRIPTION_REGISTRAR_USUARIO_AUXILIAR = "Crea un nuevo usuario auxiliar de bodega en el sistema.";
+  public static final String REGISTER_SUMMARY_REGISTRAR_USUARIO_CLIENTE = "Registrar un nuevo usuario cliente.";
+  public static final String REGISTER_DESCRIPTION_REGISTRAR_USUARIO_CLIENTE = "Crea un nuevo usuario cliente en el sistema.";
 
   public static final String AUTH_SUMMARY_VALIDAR_TOKEN = "Validar token";
   public static final String AUTH_DESCRIPTION_VALIDAR_TOKEN = "Valida la autenticidad y vigencia de un token JWT.";

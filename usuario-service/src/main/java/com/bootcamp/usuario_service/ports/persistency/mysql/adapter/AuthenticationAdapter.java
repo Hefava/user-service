@@ -50,11 +50,11 @@ public class AuthenticationAdapter implements IAuthenticationPort {
 
     @Override
     public Validation validateToken(String token) {
-        String correo = jwtService.extractUsername(token);
-        UsuarioEntity usuarioEntity = usuarioRepository.findByCorreo(correo)
+        String userID = jwtService.extractUserId(token);
+        UsuarioEntity usuarioEntity = usuarioRepository.findByUsuarioID(Long.valueOf(userID))
                 .orElseThrow(() -> new UsernameNotFoundException(USUARIO_NO_ENCONTRADO));
         String rol = usuarioEntity.getRol().getNombre().name();
         Boolean valid = jwtService.isTokenValid(token, usuarioEntity);
-        return new Validation(correo, rol, valid);
+        return new Validation(userID, rol, valid);
     }
 }
