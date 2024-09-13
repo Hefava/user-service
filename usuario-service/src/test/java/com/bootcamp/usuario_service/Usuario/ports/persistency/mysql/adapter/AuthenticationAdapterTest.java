@@ -123,20 +123,20 @@ class AuthenticationAdapterTest {
     void testValidateToken_Success() {
         // Arrange
         String token = "valid_token";
-        String email = "test@correo.com";
-        String role = "ADMIN";  // Debe coincidir con el valor en el enum RolEnum
+        Long usuarioId = 1L;
+        String role = "ADMIN";
 
         // Creamos un objeto RolEntity y le asignamos el valor del enum RolEnum.ADMIN
         RolEntity rolEntity = new RolEntity();
         rolEntity.setNombre(RolEnum.ADMIN);  // Asignamos el valor del enum ADMIN
 
         UsuarioEntity usuarioEntity = new UsuarioEntity();
-        usuarioEntity.setCorreo(email);
+        usuarioEntity.setUsuarioID(usuarioId);
         usuarioEntity.setRol(rolEntity);  // Asignamos el rol al usuario
 
         // Mock the JwtService and UsuarioRepository responses
-        Mockito.when(jwtService.extractUsername(token)).thenReturn(email);
-        Mockito.when(usuarioRepository.findByCorreo(email)).thenReturn(Optional.of(usuarioEntity));
+        Mockito.when(jwtService.extractUserId(token)).thenReturn(String.valueOf(usuarioId));
+        Mockito.when(usuarioRepository.findById(usuarioId)).thenReturn(Optional.of(usuarioEntity));
         Mockito.when(jwtService.isTokenValid(token, usuarioEntity)).thenReturn(true);
 
         // Act
@@ -144,7 +144,7 @@ class AuthenticationAdapterTest {
 
         // Assert
         assertNotNull(validation);
-        assertEquals(email, validation.getUsername());
+        assertEquals(String.valueOf(usuarioId), validation.getUsername());
         assertEquals(role, validation.getRole());
         assertTrue(validation.getAuthorized());
     }
@@ -153,10 +153,10 @@ class AuthenticationAdapterTest {
     void testValidateToken_UserNotFound() {
         // Arrange
         String token = "valid_token";
-        String email = "test@correo.com";
+        Long usuarioId = 1L;
 
-        Mockito.when(jwtService.extractUsername(token)).thenReturn(email);
-        Mockito.when(usuarioRepository.findByCorreo(email)).thenReturn(Optional.empty());
+        Mockito.when(jwtService.extractUserId(token)).thenReturn(String.valueOf(usuarioId));
+        Mockito.when(usuarioRepository.findById(usuarioId)).thenReturn(Optional.empty());
 
         // Act & Assert
         UsernameNotFoundException exception = assertThrows(UsernameNotFoundException.class, () -> {

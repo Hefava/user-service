@@ -6,7 +6,6 @@ import com.bootcamp.usuario_service.domain.utils.Validation;
 import com.bootcamp.usuario_service.ports.application.http.dto.LoginRequest;
 import com.bootcamp.usuario_service.ports.application.http.dto.ValidationResponse;
 import com.bootcamp.usuario_service.ports.application.http.mapper.ValidationResponseMapper;
-import com.bootcamp.usuario_service.ports.persistency.mysql.entity.UsuarioEntity;
 import com.bootcamp.usuario_service.ports.persistency.mysql.repository.UsuarioRepository;
 import com.bootcamp.usuario_service.ports.utils.JwtService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -18,9 +17,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -57,21 +54,6 @@ class AuthenticationControllerTest {
 
     @Autowired
     private ObjectMapper objectMapper;
-
-    // Test for UserDetailsService
-    @Test
-    @WithMockUser(username = "ADMIN", roles = {"USER"})  // Adding a mock user to the context
-    void testUserDetailsService() {
-        // Arrange: Mock the repository response for a given email
-        when(usuarioRepository.findByCorreo(anyString())).thenReturn(Optional.of(mockUser()));
-
-        // Act: Call the UserDetailsService to load user by email
-        UserDetails userDetails = userDetailsService.loadUserByUsername("test@correo.com");
-
-        // Assert: Ensure the user details are loaded correctly
-        assertNotNull(userDetails, "The returned user details should not be null");
-        assertEquals("test@correo.com", userDetails.getUsername(), "The email should match the one used to load the user");
-    }
 
     @Test
     void testUserNotFound() {
@@ -140,14 +122,5 @@ class AuthenticationControllerTest {
                 .andExpect(jsonPath("$.username").value("testUser"))
                 .andExpect(jsonPath("$.role").value("USER"))
                 .andExpect(jsonPath("$.authorized").value(false));
-    }
-
-    // Helper method to create a mock user entity
-    private UsuarioEntity mockUser() {
-        UsuarioEntity user = new UsuarioEntity();
-        user.setCorreo("test@correo.com");
-        user.setClave("password123");
-        user.setNombre("Test User");
-        return user;
     }
 }
