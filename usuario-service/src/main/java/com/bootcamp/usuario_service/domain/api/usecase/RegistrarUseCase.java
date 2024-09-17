@@ -25,29 +25,7 @@ public class RegistrarUseCase implements IRegistrarServicePort {
 
     @Override
     public void registrarAuxBodega(Usuario usuario) {
-        List<String> errors = new ArrayList<>();
-
-        if (usuarioPersistencePort.existsByCorreo(usuario.getCorreo())) {
-            errors.add(UserValidationMessages.USER_ALREADY_EXISTS);
-        }
-
-        if (usuario.getCorreo() == null || !usuario.getCorreo().matches(UsuarioUtils.EMAIL_REGEX)) {
-            errors.add(UserValidationMessages.INVALID_EMAIL_FORMAT);
-        }
-        if (usuario.getDocumentoDeIdentidad() == null || !usuario.getDocumentoDeIdentidad().matches(UsuarioUtils.DOCUMENTO_REGEX)) {
-            errors.add(UserValidationMessages.INVALID_ID_DOCUMENT);
-        }
-        if (usuario.getCelular() == null || usuario.getCelular().length() > UsuarioUtils.MAX_CELULAR_LENGTH) {
-            errors.add(UserValidationMessages.CELLULAR_LENGTH_EXCEEDED);
-        }
-        if (usuario.getFechaNacimiento() == null || Period.between(usuario.getFechaNacimiento(), LocalDate.now()).getYears() < UsuarioUtils.MIN_AGE) {
-            errors.add(UserValidationMessages.USER_UNDERAGE);
-        }
-
-        if (!errors.isEmpty()) {
-            throw new MultipleUserValidationExceptions(errors);
-        }
-
+        validarInformacion(usuario);
         encriptarClave(usuario);
         establecerRolAuxBodega(usuario);
         usuarioPersistencePort.saveUsuario(usuario);
@@ -55,29 +33,7 @@ public class RegistrarUseCase implements IRegistrarServicePort {
 
     @Override
     public void registrarCliente(Usuario usuario) {
-        List<String> errors = new ArrayList<>();
-
-        if (usuarioPersistencePort.existsByCorreo(usuario.getCorreo())) {
-            errors.add(UserValidationMessages.USER_ALREADY_EXISTS);
-        }
-
-        if (usuario.getCorreo() == null || !usuario.getCorreo().matches(UsuarioUtils.EMAIL_REGEX)) {
-            errors.add(UserValidationMessages.INVALID_EMAIL_FORMAT);
-        }
-        if (usuario.getDocumentoDeIdentidad() == null || !usuario.getDocumentoDeIdentidad().matches(UsuarioUtils.DOCUMENTO_REGEX)) {
-            errors.add(UserValidationMessages.INVALID_ID_DOCUMENT);
-        }
-        if (usuario.getCelular() == null || usuario.getCelular().length() > UsuarioUtils.MAX_CELULAR_LENGTH) {
-            errors.add(UserValidationMessages.CELLULAR_LENGTH_EXCEEDED);
-        }
-        if (usuario.getFechaNacimiento() == null || Period.between(usuario.getFechaNacimiento(), LocalDate.now()).getYears() < UsuarioUtils.MIN_AGE) {
-            errors.add(UserValidationMessages.USER_UNDERAGE);
-        }
-
-        if (!errors.isEmpty()) {
-            throw new MultipleUserValidationExceptions(errors);
-        }
-
+        validarInformacion(usuario);
         encriptarClave(usuario);
         establecerRolCliente(usuario);
         usuarioPersistencePort.saveUsuario(usuario);
@@ -86,6 +42,28 @@ public class RegistrarUseCase implements IRegistrarServicePort {
     private void encriptarClave(Usuario usuario) {
         String encryptedPassword = encryptPasswordPort.encrypt(usuario.getClave());
         usuario.setClave(encryptedPassword);
+    }
+
+    private void validarInformacion(Usuario usuario) {
+        List<String> errors = new ArrayList<>();
+        if (usuarioPersistencePort.existsByCorreo(usuario.getCorreo())) {
+            errors.add(UserValidationMessages.USER_ALREADY_EXISTS);
+        }
+        if (usuario.getCorreo() == null || !usuario.getCorreo().matches(UsuarioUtils.EMAIL_REGEX)) {
+            errors.add(UserValidationMessages.INVALID_EMAIL_FORMAT);
+        }
+        if (usuario.getDocumentoDeIdentidad() == null || !usuario.getDocumentoDeIdentidad().matches(UsuarioUtils.DOCUMENTO_REGEX)) {
+            errors.add(UserValidationMessages.INVALID_ID_DOCUMENT);
+        }
+        if (usuario.getCelular() == null || usuario.getCelular().length() > UsuarioUtils.MAX_CELULAR_LENGTH) {
+            errors.add(UserValidationMessages.CELLULAR_LENGTH_EXCEEDED);
+        }
+        if (usuario.getFechaNacimiento() == null || Period.between(usuario.getFechaNacimiento(), LocalDate.now()).getYears() < UsuarioUtils.MIN_AGE) {
+            errors.add(UserValidationMessages.USER_UNDERAGE);
+        }
+        if (!errors.isEmpty()) {
+            throw new MultipleUserValidationExceptions(errors);
+        }
     }
 
     private void establecerRolAuxBodega(Usuario usuario) {
