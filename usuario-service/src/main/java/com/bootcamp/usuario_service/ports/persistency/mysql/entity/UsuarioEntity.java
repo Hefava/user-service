@@ -30,7 +30,7 @@ public class UsuarioEntity implements UserDetails {
     @Column(nullable = false, length = 30)
     private String apellido;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String documentoDeIdentidad;
 
     @Column(nullable = false)
