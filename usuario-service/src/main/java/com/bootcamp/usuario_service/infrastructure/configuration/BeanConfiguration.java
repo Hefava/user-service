@@ -20,6 +20,7 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,7 +84,15 @@ public class BeanConfiguration {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return userID -> usuarioRepository.findByUsuarioID(Long.valueOf(userID))
-                .orElseThrow(() -> new IllegalArgumentException(UserValidationMessages.USUARIO_NO_ENCONTRADO));
+        return username -> {
+            try {
+                Long userId = Long.valueOf(username);
+                return usuarioRepository.findByUsuarioID(userId)
+                        .orElseThrow(() -> new UsernameNotFoundException(UserValidationMessages.USUARIO_NO_ENCONTRADO));
+            } catch (NumberFormatException e) {
+                return usuarioRepository.findByCorreo(username)
+                        .orElseThrow(() -> new UsernameNotFoundException(UserValidationMessages.USUARIO_NO_ENCONTRADO));
+            }
+        };
     }
 }
