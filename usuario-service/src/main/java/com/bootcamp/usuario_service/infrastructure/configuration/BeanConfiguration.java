@@ -83,7 +83,7 @@ public class BeanConfiguration {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return email -> usuarioRepository.findByCorreo(email)
+        return userID -> usuarioRepository.findByUsuarioID(Long.valueOf(userID))
                 .orElseThrow(() -> new IllegalArgumentException(UserValidationMessages.USUARIO_NO_ENCONTRADO));
     }
 }
