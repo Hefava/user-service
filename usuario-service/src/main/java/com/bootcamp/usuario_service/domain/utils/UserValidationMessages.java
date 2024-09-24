@@ -6,6 +6,7 @@ public class UserValidationMessages {
     throw new AssertionError("Cannot instantiate this class");
   }
 
+  public static final String ERRORS = "errors";
   public static final String ERROR_INESPERADO = "Ocurrió un error inesperado";
   public static final String INVALID_EMAIL_FORMAT = "Correo no tiene un formato válido";
   public static final String INVALID_ID_DOCUMENT = "Documento de identidad debe ser numérico";

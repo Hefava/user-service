@@ -12,12 +12,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.bootcamp.usuario_service.domain.utils.UserValidationMessages.ERRORS;
 import static com.bootcamp.usuario_service.domain.utils.UserValidationMessages.ERROR_INESPERADO;
 
 @ControllerAdvice
 public class ControllerAdvisor {
 
-    private static final String MESSAGE = "errors";
+    private static final String MESSAGE = ERRORS;
 
     @ExceptionHandler(MultipleUserValidationExceptions.class)
     public ResponseEntity<Map<String, List<String>>> handleMultipleUserValidationExceptions(
